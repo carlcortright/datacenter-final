@@ -5,3 +5,43 @@ body {
 #map {
   height: 100vh;
   width: 100%; }
+
+.map-overlay {
+  position: absolute;
+  width: 200px;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  text-align: center; }
+  .map-overlay img {
+    width: 100px;
+    display: inline; }
+
+.slidercontainer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000; }
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #f3f3f3;
+  outline: none; }
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #00E800;
+  cursor: pointer; }
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #00E800;
+  cursor: pointer; }

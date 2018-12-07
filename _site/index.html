@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>World Events</title>
+  <title>Globe Watch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
@@ -12,8 +12,19 @@
 </head>
 <body>
   <div id='map'></div>
+  <div class="map-overlay">
+    <img src="assets/img/logo.png" alt="Globewatch Logo">
+    <h1 id="date"></h1>
+  </div>
 
+  <div class="slidercontainer">
+    <input type="range" min="1" max="100" value="95" class="slider" id="range">
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
+  <script src="js/utils.js"></script>
   <script src="js/map.js"></script>
 </body>
 </html>
