@@ -8,8 +8,12 @@ var map = new mapboxgl.Map({
 
 // Get the geojson to display on the map
 world_map = null;
+var countries = []
 $.getJSON("assets/data/world.geo.json", function(json) {
   world_map = json;
+  for (i = 0; i < world_map.features.length; i++) {
+    countries.push(world_map.features[i].id);
+  }
 });
 
 // Load the geojson so we can start coloring
@@ -25,37 +29,44 @@ map.on("load", function() {
       "type": "fill",
       "source": "countries",
       "paint": {
-          "fill-color": blendColors(RED, GREEN, 0.5),
+          "fill-color": GREY,
           "fill-opacity": 0.6
       },
       "filter": ["==", 'id', id]
     });
   });
   var today = new Date();
-  updateColors(today.toISOString(), map);
+  updateColors(today, map);
 });
 
 
 var dateDisplay = document.getElementById("date");
+var today = new Date();
+dateDisplay.innerHTML = today.toDateString();
 var slider = document.getElementById("range");
 slider.oninput = function() {
   // Get the date we are querying
-  var percent = Date.now() * (slider.value/100);
+  var start = new Date("5/1/2013").getMilliseconds();
+  var range = Date.now() - start;
+  var percent = range * (slider.value/slider.max) + start;
   var query = new Date(percent);
   
   // Display in the upper right
   dateDisplay.innerHTML = query.toDateString();
-  updateColors(query.toISOString(), map);
+  updateColors(query, map);
 }
-
-
 
 function updateColors(date, map) {
   var sentiment = [];
-  $.getJSON(SENTIMENT_ENDPOINT + '?date=' + date, function(json) {
+  $.getJSON(SENTIMENT_ENDPOINT + '?year=' + date.getFullYear() + '&week=' + date.getWeek(), function(json) {
     sentiment = json.countries;
-    for (const country in sentiment){
-      map.setPaintProperty(country, 'fill-color', blendColors(RED, GREEN, sentiment[country]));
+    for (const country in countries){
+      if (sentiment.includes(country)) {
+        var p = (sentiment[country] + 10) / 20;
+        map.setPaintProperty(country, 'fill-color', blendColors(RED, GREEN, p));
+      } else {
+        map.setPaintProperty(country, 'fill-color', GREY);
+      } 
     }
   });
 }
