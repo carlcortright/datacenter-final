@@ -12,7 +12,7 @@ var countries = []
 $.getJSON("assets/data/world.geo.json", function(json) {
   world_map = json;
   for (i = 0; i < world_map.features.length; i++) {
-    countries.push(world_map.features[i].id);
+    countries.push(world_map.features[i].properties.id);
   }
 });
 
@@ -60,8 +60,10 @@ function updateColors(date, map) {
   var sentiment = [];
   $.getJSON(SENTIMENT_ENDPOINT + '?year=' + date.getFullYear() + '&week=' + date.getWeek(), function(json) {
     sentiment = json.countries;
-    for (const country in countries){
-      if (sentiment.includes(country)) {
+    for (var i = 0; i < countries.length; i++){
+      var country = countries[i];
+      if (country in sentiment) {
+        if (sentiment[country] > 10) {sentiment[country] = 10} else if (sentiment[country] < -10) {sentiment[country] = -10}
         var p = (sentiment[country] + 10) / 20;
         map.setPaintProperty(country, 'fill-color', blendColors(RED, GREEN, p));
       } else {
